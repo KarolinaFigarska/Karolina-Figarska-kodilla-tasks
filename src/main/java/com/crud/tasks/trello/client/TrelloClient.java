@@ -12,6 +12,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.*;
 
+import static java.util.Optional.ofNullable;
+
 @Component
 @RequiredArgsConstructor
 public class TrelloClient {
@@ -44,9 +46,7 @@ public class TrelloClient {
 
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
 
-        return Optional.ofNullable(boardsResponse)
-                .map(Arrays::asList)
-                .orElse(Collections.emptyList());
+        return Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
     }
 
     public CreatedTrelloCard createNewCard(TrelloCardDto trelloCardDto) {
